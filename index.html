@@ -1,0 +1,58 @@
+ <!doctype html>
+<html>
+  <head>
+    <title>minimalistic websocket page</title>
+    <script language="Javascript">
+      var SocketKlass = "MozWebSocket" in window ? MozWebSocket : WebSocket;
+      var ws = new SocketKlass('ws://localhost:4545');
+      ws.onopen = function() {
+        console.log('opened');
+        document.getElementById('messages').innerHTML += 'connection opened\n';
+      }
+      ws.onclose = function() {
+        console.log('closed');
+        document.getElementById('messages').innerHTML += 'connection closed\n';
+      }
+      ws.onerror = function(error) {
+        console.log('error: ' , error);
+        document.getElementById('messages').innerHTML += 'connection error: ' + error + '\n';
+      }
+      ws.onmessage = function(msg){
+        document.getElementById('messages').innerHTML += '<: ' + msg.data + '\n';
+      }
+      function Send(message) {
+        ws.send(message);
+        document.getElementById('messages').innerHTML += '>: ' + message + '\n';
+      }
+      function Close() {
+        ws.close();
+        document.getElementById('messages').innerHTML += 'closing connection\n';
+      }
+    </script>
+  </head>
+  <body>
+
+    <hr/>
+
+    <div>
+      <form name="sendingForm" action="">
+        <input type="text" name="text">
+        <input type="button" value="send" onclick="Send(document.sendingForm.text.value)">
+      </form>
+      <button onclick="Close();">close</button>
+    </div>
+
+    <hr/>
+
+    <div style="
+        width: 80%;
+        height: 400px;
+        background: #EEEEEE;
+        padding: 1em;
+        overflow-y: scroll;
+    ">
+    <pre id="messages"></pre>
+    </div>
+
+  </body>
+</html>
