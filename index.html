@@ -4,7 +4,7 @@
     <title>minimalistic websocket page</title>
     <script language="Javascript">
       var SocketKlass = "MozWebSocket" in window ? MozWebSocket : WebSocket;
-      var ws = new SocketKlass('ws://localhost:4545');
+      var ws = new SocketKlass('ws://localhost:9999');
       ws.onopen = function() {
         console.log('opened');
         document.getElementById('messages').innerHTML += 'connection opened\n';
